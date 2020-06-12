@@ -27,14 +27,43 @@
 
 (defn firsts
   [lists]
-  (if (empty? lists) '()
+  (if (empty? lists)
+    '()
     (cons (first (first lists))
-          (firsts (rest lists)))))
+         (firsts (rest lists)))))
+
+(defn insert-r
+  [new old lat]
+  (cond (empty? lat) '()
+        (= old (first lat)) (cons (first lat) (cons new (rest lat)))
+        :else (cons (first lat) (insert-r new old (rest lat)))))
+
+; mulirember
+
+(defn multi-rember
+  [a lat]
+  (cond (empty? lat) '()
+        (= (first lat) a) (multi-rember a (rest lat))
+        :else (cons (first lat) (multi-rember a (rest lat)))))
+
+; multiinsertR
+(defn multi-insert-r
+  [new old lat]
+  (cond (empty? lat) '()
+        (= (first lat) old) (cons (first lat) (cons new (multi-insert-r new old (rest lat))))
+        :else (cons (first lat) (multi-insert-r new old (rest lat)))))
 
 ; tests
 
+(multi-rember "lucas" (list "lucas" "joao" "vicente" "lucas" "pedro" "lucas"))
+
+(insert-r "topping" "fudge" (list "ice" "cream" "with" "fudge" "for" "desert"))
+
+(multi-insert-r "topping" "fudge" (list "fudge" "ice" "cream" "with" "fudge" "for" "desert" "fudge"))
+
 (lat? (list "lucas" "felix"))
 (lat? (list (list "a") "b" "c"))
+
 (lat? (list "a" (list "b" "c") "d"))
 
 (rember "bacon" (list "bacon" "lettuce" "and" "tomato"))
