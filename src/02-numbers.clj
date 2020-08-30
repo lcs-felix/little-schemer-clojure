@@ -77,6 +77,32 @@
         (= a (first lat)) (inc (occur a (rest lat)))
         :else (occur a (rest lat))))
 
+(defn numbered?
+  [aexp]
+  (println aexp)
+  (cond
+    (atom? aexp) (number? aexp)
+    :else (and (numbered? (first aexp))
+         (numbered? (first (rest (rest aexp)))))))
+
+(numbered? '(3 + (4 x 5)))
+
+(defn value [nexp]
+  (cond (atom? nexp) nexp
+        (= (first (rest nexp)) '+)
+          (+ (value (first nexp)) (value (first (rest (rest nexp)))))
+        (= (first (rest nexp)) 'expt)
+          (expt (value (first nexp)) (value (first (rest (rest nexp)))))
+        :else
+          (x (value (first nexp)) (value (first (rest (rest nexp)))))))
+
+(comment
+  (value '(1 + 3))
+  4)
+(comment
+  (value '(1 + (3 expt 4)))
+  82)
+
 (occur 5 '(5 "a" 3 "b" 5 6 "c" 5))
 
 (all-nums '("a" 3 "b" 5 6 "c"))
