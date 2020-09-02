@@ -37,3 +37,13 @@
         set2 (list "four" "pounds" "chicken" "and" 5 "ounces" "horseradish")]
     (subset? set1 set2))
   )
+
+(defn eqset? [set1 set2]
+  (and (subset? set1 set2)
+         (subset? set2 set1)))
+
+(comment
+  (let [set1 (list 6 "large" "chickens" "with" "wings")
+        set2 (list 6 "chickens" "with" "large" "wings")]
+    (eqset? set1 set2))
+  )
