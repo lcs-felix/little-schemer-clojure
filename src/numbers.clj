@@ -143,12 +143,21 @@
 (tup+ '(3 7 10 11) '(4 6))
 ; (7 13 10 11)
 
+(defn operator [aexp]
+  (first aexp))
+
+(defn first-sub-exp [aexp]
+  (first (rest aexp)))
+
+(defn second-sub-exp [nexp]
+  (first (rest (rest nexp))))
+
 (defn value-infix [nexp]
   (prn nexp)
   (cond (and (sc/atom? nexp) (number? nexp)) nexp
-        :else ((resolve (first nexp))
-               (value-infix (first (rest nexp)))
-               (value-infix (first (rest (rest nexp)))))))
+        :else ((resolve (operator nexp))
+               (value-infix (first-sub-exp nexp))
+               (value-infix (second-sub-exp nexp)))))
 
 (comment
   (value-infix '(+ (x 3 6) (expt 8 2)))
