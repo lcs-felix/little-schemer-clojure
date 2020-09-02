@@ -5,8 +5,8 @@
   (not (list? x)))
 
 (defn equal? [s1 s2]
-  (cond (and (sc/atom? s1) (sc/atom? s2)) (= s1 s2)
-        (or (sc/atom? s1) (sc/atom? s2)) false
+  (cond (and (atom? s1) (atom? s2)) (= s1 s2)
+        (or (atom? s1) (atom? s2)) false
         :else (eqlist? s1 s2)))
 
 (defn eqlist? [l1 l2]
@@ -34,7 +34,7 @@
   [lat]
   (cond
     (empty? lat) true
-    (sc/atom? (first lat)) (recur (rest lat))
+    (atom? (first lat)) (recur (rest lat))
     :else false))
 
 (defn member?
