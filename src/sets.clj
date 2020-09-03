@@ -47,3 +47,26 @@
         set2 (list 6 "chickens" "with" "large" "wings")]
     (eqset? set1 set2))
   )
+
+(defn intersect? [set1 set2]
+  (if (empty? set1) false
+        (or (sc/member? (first set1) set2)
+        (intersect? (rest set1) set2))))
+
+(comment
+  (let [set1 (list "stewed" "tomatoes" "and" "macaroni")
+        set2 (list "macaroni" "and" "cheese")]
+    (intersect? set1 set2))
+  )
+
+(defn intersect [set1 set2]
+  (cond
+    (empty? set1) '()
+    (sc/member? (first set1) set2) (cons (first set1) (intersect (rest set1) set2))
+    :else (intersect (rest set1) set2)))
+
+(comment
+  (let [set1 (list "stewed" "tomatoes" "and" "macaroni")
+        set2 (list "macaroni" "and" "cheese")]
+    (intersect set1 set2))
+  )
