@@ -70,3 +70,27 @@
         set2 (list "macaroni" "and" "cheese")]
     (intersect set1 set2))
   )
+
+(defn union [set1 set2]
+  (cond
+    (empty? set1) set2
+    (sc/member? (first set1) set2) (union (rest set1) set2)
+    :else (cons (first set1) (union (rest set1) set2))))
+
+(comment
+  (let [set1 (list "stewed" "tomatoes" "and" "macaroni" "casserole")
+        set2 (list "macaroni" "and" "cheese")]
+    (union set1 set2))
+  )
+
+(defn intersectall [l-set]
+  (if (empty? (rest l-set))
+    (first l-set)
+    (intersect (first l-set) (intersectall (rest l-set)))))
+
+(comment
+  (intersectall (list (list 6 "pears" "and")
+                 (list 3 "peaches" "and" 6 "peppers")
+                 (list 8 "pears" "and" 6 "plums")
+                 (list "and" 6 "prunes" "with" "some" "apples")))
+  )
