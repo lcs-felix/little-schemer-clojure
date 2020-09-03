@@ -79,6 +79,30 @@
         (= (first lat) old) (cons (first lat) (cons new (multi-insert-r new old (rest lat))))
         :else (cons (first lat) (multi-insert-r new old (rest lat)))))
 
+(defn a-pair? [lat]
+  (cond
+    (atom? lat) false
+    (empty? lat) false
+    (empty? (rest lat)) false
+    (not (empty? (rest (rest lat)))) false
+    :else true))
+
+(comment
+  (a-pair? (list))
+  (a-pair? (list 1 2))
+  (a-pair? (list 2))
+  (a-pair? (list 1 2 3))
+  )
+
+(defn second [p]
+  (first (rest p)))
+
+(defn third [p]
+  (first (rest (rest p))))
+
+(defn build [s1 s2]
+  (cons s1 (cons s2 '())))
+
 ; tests
 
 (multi-rember "lucas" (list "lucas" "joao" "vicente" "lucas" "pedro" "lucas"))
