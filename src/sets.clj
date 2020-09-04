@@ -1,5 +1,5 @@
 (ns sets
-  (require '[schemer-core :as sc]))
+  (:require [schemer-core :as sc]))
 
 (defn set? [lat]
   (cond

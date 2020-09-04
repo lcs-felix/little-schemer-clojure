@@ -1,5 +1,7 @@
 (ns schemer-core)
 
+(declare eqlist?)
+
 (defn atom?
   [x]
   (not (list? x)))
