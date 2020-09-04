@@ -103,6 +103,16 @@
 (defn build [s1 s2]
   (cons s1 (cons s2 '())))
 
+(defn revrel [rel]
+  (if (empty? rel)
+    '()
+    (cons (build (second (first rel)) (first (first rel)))
+          (revrel (rest rel)))))
+
+(comment
+  (revrel (list (list 8 "a") (list "pumpkin" "pie") (list "got" "sick")))
+  )
+
 ; tests
 
 (multi-rember "lucas" (list "lucas" "joao" "vicente" "lucas" "pedro" "lucas"))

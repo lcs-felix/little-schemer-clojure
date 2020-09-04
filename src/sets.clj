@@ -94,3 +94,10 @@
                  (list 8 "pears" "and" 6 "plums")
                  (list "and" 6 "prunes" "with" "some" "apples")))
   )
+
+(defn fun? [rel]
+  (set? (sc/firsts rel)))
+
+(comment
+  (fun? (list (list "d" 4) (list "b" 0) (list "b" 9) (list "e" 5) (list "g" 4)))
+  )
