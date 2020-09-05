@@ -46,12 +46,20 @@
     :else (or (= element (first lat))
               (recur element (rest lat)))))
 
-(defn rember
-  [element lat]
-  (let [first (first lat) rest (rest lat)]
-    (cond (empty? lat) '()
-          (= element first) rest
-          :else (cons first (rember element rest)))))
+(defn insert-g [seq]
+  (fn [new old l]
+    (cond
+      (empty? l) '()
+      (= (first l) old) (seq new old (rest l))
+      :else (cons (first l) ((insert-g seq) new old (rest l))))))
+
+(defn rember [a l]
+  ((insert-g (fn [new old l] l)) false a l))
+
+(rember "bacon" (list "bacon" "lettuce" "and" "tomato"))
+(rember "bacon" (list "lettuce" "bacon" "and" "tomato"))
+(rember "bacon" (list "bacon" "lettuce" "bacon" "and" "tomato"))
+(rember "bacon" (list "lettuce" "bacon" "salsa" "bacon" "and" "tomato"))
 
 (defn firsts
   [lists]
@@ -127,11 +135,6 @@
 (lat? (list (list "a") "b" "c"))
 
 (lat? (list "a" (list "b" "c") "d"))
-
-(rember "bacon" (list "bacon" "lettuce" "and" "tomato"))
-(rember "bacon" (list "lettuce" "bacon" "and" "tomato"))
-(rember "bacon" (list "bacon" "lettuce" "bacon" "and" "tomato"))
-(rember "bacon" (list "lettuce" "bacon" "salsa" "bacon" "and" "tomato"))
 
 (firsts (list (list "apple" "peach" "pumpkin")
               (list "plum" "pear" "cherry")
