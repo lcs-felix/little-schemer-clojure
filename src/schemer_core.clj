@@ -123,6 +123,20 @@
   (revrel (list (list 8 "a") (list "pumpkin" "pie") (list "got" "sick")))
   )
 
+(defn multirember&co [a lat col]
+  (prn col)
+  (cond
+    (empty? lat)
+      (col (quote ()) (quote ()))
+    (= (first lat) a)
+      (multirember&co a (rest lat) (fn [newlat seen]
+                                     (prn "inner fn first" newlat seen)
+                                     (col newlat (cons (first lat) seen))))
+    :else
+      (multirember&co a (rest lat) (fn [newlat seen]
+                                     (prn "inner fn else" newlat seen)
+                                     (col (cons (first lat) newlat) seen)))))
+
 ; tests
 
 (multi-rember "lucas" (list "lucas" "joao" "vicente" "lucas" "pedro" "lucas"))
@@ -146,3 +160,4 @@
               (list "eleven" "green" "oranges")))
 
 (firsts '())
+
