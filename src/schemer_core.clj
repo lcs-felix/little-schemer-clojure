@@ -18,7 +18,7 @@
     :else (and (equal? (first l1) (first l2))
                (eqlist? (rest l1) (rest l2)))))
 
-(eqlist? (list "banana" (list (list "split"))) (list (list "banana") (list "split")))
+(eqlist? '(banana '('(split))) '('(banana) '(split)))
 ; true
 (eqlist? (list "banana" (list (list "split"))) (list "banana" (list (list "split"))))
 ; true
@@ -124,18 +124,35 @@
   )
 
 (defn multirember&co [a lat col]
-  (prn col)
   (cond
     (empty? lat)
       (col (quote ()) (quote ()))
     (= (first lat) a)
       (multirember&co a (rest lat) (fn [newlat seen]
-                                     (prn "inner fn first" newlat seen)
                                      (col newlat (cons (first lat) seen))))
     :else
       (multirember&co a (rest lat) (fn [newlat seen]
-                                     (prn "inner fn else" newlat seen)
                                      (col (cons (first lat) newlat) seen)))))
+
+(defn multi-insert-lr
+  [new old-l old-r lat col]
+  (cond
+    (empty? lat)
+      (col '() 0 0)
+    (= old-l (first lat))
+      (multi-insert-lr new old-l old-r (rest lat)
+                       (fn [newlat l r]
+                         (col (cons new (cons old-l newlat))
+                              (inc l) r)))
+    (= old-r (first lat))
+      (multi-insert-lr new old-l old-r (rest lat)
+                       (fn [newlat l r]
+                         (col (cons old-r (cons new newlat))
+                              l (inc r))))
+    :else
+      (multi-insert-lr new old-l old-r (rest lat)
+                       (fn [newlat l r]
+                         (col (cons (first lat) newlat) l r)))))
 
 ; tests
 
