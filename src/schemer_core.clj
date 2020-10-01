@@ -154,6 +154,12 @@
                        (fn [newlat l r]
                          (col (cons (first lat) newlat) l r)))))
 
+(comment
+  (let [col (fn [newlat l r]
+              {:newlat newlat :l l :r r})]
+    (multi-insert-lr 'salty 'fish 'chips '(chips and fish or fish and chips) col))
+  )
+
 ; tests
 
 (multi-rember "lucas" (list "lucas" "joao" "vicente" "lucas" "pedro" "lucas"))
