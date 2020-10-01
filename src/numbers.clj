@@ -99,9 +99,6 @@
         :else
           (x (value (first nexp)) (value (first (rest (rest nexp)))))))
 
-(defn even? [n]
-  (= (* (/ n 2) 2) n))
-
 (defn even-only* [l]
   (prn l)
   (cond

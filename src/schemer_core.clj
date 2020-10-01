@@ -134,30 +134,30 @@
       (multirember&co a (rest lat) (fn [newlat seen]
                                      (col (cons (first lat) newlat) seen)))))
 
-(defn multi-insert-lr
+(defn multiinsertLR&co
   [new old-l old-r lat col]
   (cond
     (empty? lat)
       (col '() 0 0)
     (= old-l (first lat))
-      (multi-insert-lr new old-l old-r (rest lat)
-                       (fn [newlat l r]
+      (multiinsertLR&co new old-l old-r (rest lat)
+                        (fn [newlat l r]
                          (col (cons new (cons old-l newlat))
                               (inc l) r)))
     (= old-r (first lat))
-      (multi-insert-lr new old-l old-r (rest lat)
-                       (fn [newlat l r]
+      (multiinsertLR&co new old-l old-r (rest lat)
+                        (fn [newlat l r]
                          (col (cons old-r (cons new newlat))
                               l (inc r))))
     :else
-      (multi-insert-lr new old-l old-r (rest lat)
-                       (fn [newlat l r]
+      (multiinsertLR&co new old-l old-r (rest lat)
+                        (fn [newlat l r]
                          (col (cons (first lat) newlat) l r)))))
 
 (comment
   (let [col (fn [newlat l r]
               {:newlat newlat :l l :r r})]
-    (multi-insert-lr 'salty 'fish 'chips '(chips and fish or fish and chips) col))
+    (multiinsertLR&co 'salty 'fish 'chips '(chips and fish or fish and chips) col))
   )
 
 ; tests
