@@ -99,6 +99,24 @@
         :else
           (x (value (first nexp)) (value (first (rest (rest nexp)))))))
 
+(defn even? [n]
+  (= (* (/ n 2) 2) n))
+
+(defn even-only* [l]
+  (prn l)
+  (cond
+    (empty? l) '()
+    (sc/atom? (first l))
+    (if (even? (first l))
+      (cons (first l) (even-only* (rest l)))
+      (even-only* (rest l)))
+    :else (cons (even-only* (first l))
+                (even-only* (rest l)))))
+
+(comment
+  (even-only* (list (list 9 1 2 8) 3 10 (list (list 9 9) 7 6) 2))
+  )
+
 (comment
   (value '(1 + 3)) ;; 4
   (value '(1 + (3 expt 4))) ;; 82
