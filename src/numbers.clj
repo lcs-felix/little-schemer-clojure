@@ -99,19 +99,49 @@
         :else
           (x (value (first nexp)) (value (first (rest (rest nexp)))))))
 
-(defn even-only* [l]
-  (prn l)
+(defn evens-only* [l]
   (cond
     (empty? l) '()
     (sc/atom? (first l))
     (if (even? (first l))
-      (cons (first l) (even-only* (rest l)))
-      (even-only* (rest l)))
-    :else (cons (even-only* (first l))
-                (even-only* (rest l)))))
+      (cons (first l) (evens-only* (rest l)))
+      (evens-only* (rest l)))
+    :else (cons (evens-only* (first l))
+                (evens-only* (rest l)))))
 
 (comment
-  (even-only* (list (list 9 1 2 8) 3 10 (list (list 9 9) 7 6) 2))
+  (evens-only* (list (list 9 1 2 8) 3 10 (list (list 9 9) 7 6) 2))
+  )
+
+(defn evens-only*&co
+  [l col]
+  (cond
+    (empty? l) (col '() 1 0)
+    (sc/atom? (first l))
+      (if (even? (first l))
+        (evens-only*&co (rest l) (fn [newlat p s]
+                                   (col (cons (first l) newlat)
+                                        (* (first l) p) s)))
+        (evens-only*&co (rest l) (fn [newlat p s]
+                                   (col newlat p (+ (first l) s)))))
+    :else
+      (evens-only*&co
+        (first l)
+        (fn [al ap as]
+          (evens-only*&co (rest l)
+                          (fn [dl dp ds]
+                            (col (cons al dl)
+                                 (x ap dp)
+                                 (+ as ds))))))))
+
+(defn the-last-friend
+  [newl product sum]
+    (prn "the-last-friend" newl product sum)
+    (cons sum
+      (cons product newl)))
+
+(comment
+  (evens-only*&co (list (list 9 1 2 8) 3 10 (list (list 9 9) 7 6) 2) the-last-friend)
   )
 
 (comment
