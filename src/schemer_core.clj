@@ -154,6 +154,16 @@
                         (fn [newlat l r]
                          (col (cons (first lat) newlat) l r)))))
 
+(defn shift [pair]
+  (build (first (first pair))
+         (build (second (first pair))
+                (second pair))))
+
+(comment
+  (shift '((a b) c)) ;; (a (b c))
+  (shift '((a b) (c d))) ;; (a (b (c d)))
+  )
+
 (comment
   (let [col (fn [newlat l r]
               {:newlat newlat :l l :r r})]
