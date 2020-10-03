@@ -164,6 +164,28 @@
   (shift '((a b) (c d))) ;; (a (b (c d)))
   )
 
+(defn align
+  [pora]
+  (cond
+    (atom? pora) pora
+    (a-pair? (first pora))
+      (align (shift pora))
+    :else
+      (build (first pora)
+             (align (second pora)))))
+
+(comment
+  (align '((a b) (c d)))
+  )
+
+(defn length*
+  [pora]
+  (cond (empty? pora) 0
+        (atom? (first pora))
+          (inc (length* (rest pora)))
+        :else (+ (length* (first pora))
+           (length* (rest pora)))))
+
 (comment
   (let [col (fn [newlat l r]
               {:newlat newlat :l l :r r})]
