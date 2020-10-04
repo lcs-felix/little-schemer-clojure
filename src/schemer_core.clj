@@ -175,6 +175,7 @@
              (align (second pora)))))
 
 (comment
+  (align '(a (b c d (g u i)) f))
   (align '((a b) (c d)))
   )
 
@@ -185,6 +186,13 @@
           (inc (length* (rest pora)))
         :else (+ (length* (first pora))
            (length* (rest pora)))))
+
+(defn weight*
+  [pora]
+  (cond
+    (atom? pora) 1
+    :else (+ (* (weight* (first pora)) 2)
+             (weight* (second pora)))))
 
 (comment
   (let [col (fn [newlat l r]
