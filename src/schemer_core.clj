@@ -4,7 +4,7 @@
 
 (defn atom?
   [x]
-  (not (list? x)))
+  (not (seq? x)))
 
 (defn equal? [s1 s2]
   (cond (and (atom? s1) (atom? s2)) (= s1 s2)
@@ -119,6 +119,10 @@
     (cons (build (second (first rel)) (first (first rel)))
           (revrel (rest rel)))))
 
+(defn revpair
+  [pair]
+  (build (second pair) (first pair)))
+
 (comment
   (revrel (list (list 8 "a") (list "pumpkin" "pie") (list "got" "sick")))
   )
@@ -193,6 +197,20 @@
     (atom? pora) 1
     :else (+ (* (weight* (first pora)) 2)
              (weight* (second pora)))))
+
+(defn shuffle
+  [pora]
+  (prn (atom? pora) pora)
+  (cond (atom? pora) (do (prn 1) pora)
+        (a-pair? (first pora)) (do (prn 2) (shuffle (revpair pora)))
+        :else (build (first pora)
+                     (do (prn 3) (shuffle (second pora))))))
+
+(comment
+  (shuffle '(a (b c)))
+  (shuffle '(a b))
+  (shuffle '((a b) (c d)))
+  )
 
 (comment
   (let [col (fn [newlat l r]
